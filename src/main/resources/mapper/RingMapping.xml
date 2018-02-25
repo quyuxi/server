@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resthome.dao.RingDao" >
+    <resultMap id="RingData" type="com.resthome.model.RingData">
+        <id column="datetime" property="datetime" javaType="java.lang.String"></id>
+        <result column="curID" property="curID" javaType="java.lang.String"></result>
+        <result column="lng" property="lng" javaType="java.lang.String"></result>
+        <result column="lat" property="lat" javaType="java.lang.String"></result>
+        <result column="heartRate" property="heartRate" javaType="java.lang.String"></result>
+    </resultMap>
+    
+  <!--     private  Integer curID;
+    private   String  datetime;
+    private  String lug;
+    private String lat;
+    private String heartRate;-->
+
+    <update id="createTable" parameterType="java.lang.String">
+
+        CREATE TABLE `${tableName}`
+        (
+          `curID`  varchar(50) NOT NULL ,
+          `datetime`  datetime NOT NULL ,
+          `lng`  varchar(255) NOT NULL ,
+          `lat`  varchar(255) NOT NULL ,
+          `heartRate`  varchar(255) NOT NULL ,
+           PRIMARY KEY (`datetime`)
+        );
+
+    </update>
+    
+    <select id="selectLastInfo" parameterType="java.lang.String" resultMap="RingData">
+        select * from ${tableName} order by curID  desc limit 1;
+    </select>
+
+    <delete id="delRing" parameterType="java.lang.String">
+        DROP TABLE IF EXISTS ${tableName};
+    </delete>
+
+
+    <select id="selectSpecifyDateInfo" parameterType="java.lang.String" resultMap="RingData">
+        SELECT * FROM ${tableName} WHERE
+        <![CDATA[
+                datetime>=#{start} AND datetime<=#{end}
+        ]]>
+
+    </select>
+
+
+    <select id="selectAllRingData" parameterType="java.lang.String" resultMap="RingData">
+        SELECT * FROM ${tableName}
+    </select>
+
+    <insert id="addRingData" parameterType="com.resthome.model.RingData" >
+        INSERT INTO
+                ${curID}(curID,datetime,lng,lat,heartRate)
+                     VALUES (#{curID},str_to_date(#{datetime},'%Y-%m-%d %H:%i:%s'),#{lng},#{lat},#{heartRate})
+    </insert>
+
+
+
+
+</mapper>
+

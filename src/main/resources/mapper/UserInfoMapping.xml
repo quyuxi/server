@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.resthome.dao.UserDao" >
+
+    <!--
+     private String userName;      //用户名          本地数据库有该列——有
+
+    private String userPassword;  //用户密码        本地数据库有该列——有
+
+    private int isAdmin = -1;             //用户权限               本地数据库没有有该列——无
+
+    private String number;    //用户工号              本地数据库没有有该列——无
+
+    private String realName;  //用户姓名              本地数据库没有有该列——无
+
+    private String sex;       //用户性别              本地数据库没有有该列——无
+
+    private String idCard;   //用户身份证号          本地数据库没有有该列——无
+
+    private String birthday; //用户生日              本地数据库没有有该列——无
+
+    private String superior;  //添加该用户的管理员    本地数据库没有有该列——无
+    -->
+    <resultMap type="com.resthome.model.LogUser" id="user">
+        <id column="userName" property="userName" javaType="java.lang.String"></id>
+        <result column="userPassword" property="userPassword" javaType="java.lang.String"></result>
+        <result column="isAdmin" property="isAdmin" javaType="java.lang.Integer"></result>
+        <result column="number" property="number" javaType="java.lang.String"></result>
+        <result column="realName" property="realName" javaType="java.lang.String"></result>
+        <result column="sex" property="sex" javaType="java.lang.String"></result>
+        <result column="idCard" property="idCard" javaType="java.lang.String"></result>
+        <result column="birthday" property="birthday" javaType="java.lang.String"></result>
+        <result column="superior" property="superior" javaType="java.lang.String"></result>
+    </resultMap>
+
+    <!--addUser-->
+    <insert id="addUser" parameterType="com.resthome.model.LogUser" >
+        INSERT INTO logUser (userName,userPassword,isAdmin,number,realName,sex,idCard,birthday,superior)
+        VALUES (#{userName},#{userPassword},#{isAdmin},#{number},#{realName},#{sex},#{idCard},#{birthday},#{superior})
+    </insert>
+
+    <!--   //update-->
+   <update id="updateUser" parameterType="com.resthome.model.LogUser">
+      update  logUser
+          SET
+          userName=#{userName},
+
+          isAdmin=#{isAdmin},
+          number=#{number},
+          realName=#{realName},
+          sex=#{sex},
+          idCard=#{idCard},
+          birthday=#{birthday},
+          superior=#{superior}
+
+        WHERE userName=#{userName}
+   </update>
+
+    <delete id="delUser" parameterType="java.lang.String">
+        DELETE  FROM  logUser where userName=#{userName}
+    </delete>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="user">
+        SELECT * FROM logUser WHERE userName=#{name}
+    </select>
+
+    <select id="selectAllUser" resultMap="user">
+        SELECT * FROM logUser
+    </select>
+
+    <update id="updatePasswd" parameterType="com.resthome.model.LogUser">
+        UPDATE logUser SET userPassword=#{userPassword} WHERE userName=#{userName}
+    </update>
+
+</mapper>
